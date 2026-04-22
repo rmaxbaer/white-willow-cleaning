@@ -1168,70 +1168,76 @@
         <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
       </div>
       <div class="modal-body">
-        <!--
-          FORMSPREE SETUP:
-          1. Go to https://formspree.io and create a free account
-          2. Create a new form and copy your form ID
-          3. Replace "YOUR_FORM_ID" in the fetch URL below with your actual form ID
-          Submissions will be emailed to: maxbaer@wyperdrive.com
-        -->
-        <div class="form-row">
-          <div class="form-group">
-            <label for="fname">Full Name *</label>
-            <input type="text" id="fname" name="name" placeholder="Jane Smith" required />
+        <!-- Global form-level error (e.g. network failure) -->
+        <div data-fs-error style="display:none; margin-bottom:1rem; padding:0.75rem 1rem; background:#fff0f0; border:1px solid #f5c0c0; border-radius:8px; font-size:0.88rem; color:#c0392b;"></div>
+
+        <form id="booking-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">Full Name *</label>
+              <input type="text" id="fname" name="name" placeholder="Jane Smith" required data-fs-field />
+              <span data-fs-error="name" style="font-size:0.78rem; color:#c0392b; margin-top:2px;"></span>
+            </div>
+            <div class="form-group">
+              <label for="fphone">Phone Number *</label>
+              <input type="tel" id="fphone" name="phone" placeholder="(208) 555-0100" required data-fs-field />
+              <span data-fs-error="phone" style="font-size:0.78rem; color:#c0392b; margin-top:2px;"></span>
+            </div>
           </div>
           <div class="form-group">
-            <label for="fphone">Phone Number *</label>
-            <input type="tel" id="fphone" name="phone" placeholder="(208) 555-0100" required />
+            <label for="faddress">Address or Zip Code *</label>
+            <input type="text" id="faddress" name="address" placeholder="337 Stillwater Circle, Idaho Falls, ID 83404" required data-fs-field />
+            <span data-fs-error="address" style="font-size:0.78rem; color:#c0392b; margin-top:2px;"></span>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="faddress">Address or Zip Code *</label>
-          <input type="text" id="faddress" name="address" placeholder="337 Stillwater Circle, Idaho Falls, ID 83404" required />
-        </div>
-        <div class="form-row">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fservice">Service Type *</label>
+              <select id="fservice" name="service_type" required data-fs-field>
+                <option value="" disabled selected>Select a service</option>
+                <option>Standard Cleaning</option>
+                <option>Deep Cleaning</option>
+                <option>Move-In / Move-Out</option>
+                <option>Recurring Cleaning</option>
+                <option>Not sure — need advice</option>
+              </select>
+              <span data-fs-error="service_type" style="font-size:0.78rem; color:#c0392b; margin-top:2px;"></span>
+            </div>
+            <div class="form-group">
+              <label for="ffrequency">Frequency *</label>
+              <select id="ffrequency" name="frequency" required data-fs-field>
+                <option value="" disabled selected>Select frequency</option>
+                <option>One-Time</option>
+                <option>Weekly</option>
+                <option>Bi-Weekly</option>
+                <option>Monthly</option>
+              </select>
+              <span data-fs-error="frequency" style="font-size:0.78rem; color:#c0392b; margin-top:2px;"></span>
+            </div>
+          </div>
           <div class="form-group">
-            <label for="fservice">Service Type *</label>
-            <select id="fservice" name="service_type" required>
-              <option value="" disabled selected>Select a service</option>
-              <option>Standard Cleaning</option>
-              <option>Deep Cleaning</option>
-              <option>Move-In / Move-Out</option>
-              <option>Recurring Cleaning</option>
-              <option>Not sure — need advice</option>
-            </select>
+            <label for="fdate">Preferred Date</label>
+            <input type="date" id="fdate" name="preferred_date" data-fs-field />
           </div>
           <div class="form-group">
-            <label for="ffrequency">Frequency *</label>
-            <select id="ffrequency" name="frequency" required>
-              <option value="" disabled selected>Select frequency</option>
-              <option>One-Time</option>
-              <option>Weekly</option>
-              <option>Bi-Weekly</option>
-              <option>Monthly</option>
-            </select>
+            <label for="fnotes">Notes / Special Requests</label>
+            <textarea id="fnotes" name="notes" placeholder="Any details about your home, pets, allergies, or specific areas you'd like focused on..." data-fs-field></textarea>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="fdate">Preferred Date</label>
-          <input type="date" id="fdate" name="preferred_date" />
-        </div>
-        <div class="form-group">
-          <label for="fnotes">Notes / Special Requests</label>
-          <textarea id="fnotes" name="notes" placeholder="Any details about your home, pets, allergies, or specific areas you'd like focused on..."></textarea>
-        </div>
-        <button class="modal-submit" id="submitBtn" onclick="submitForm()">Request My Quote →</button>
-        <p class="modal-footer-note">🔒 Your info is never shared. We'll contact you by phone to confirm.</p>
+          <button type="submit" class="modal-submit" data-fs-submit-btn>Request My Quote →</button>
+          <p class="modal-footer-note">🔒 Your info is never shared. We'll contact you by phone to confirm.</p>
+        </form>
       </div>
     </div>
-    <!-- Success view -->
-    <div class="modal-success" id="modalSuccess">
-      <div class="success-icon">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5C7A58" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+
+    <!-- Success view (shown by Formspree SDK via data-fs-success) -->
+    <div data-fs-success style="display:none;">
+      <div class="modal-success show">
+        <div class="success-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#5C7A58" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>You're all set!</h3>
+        <p>Thanks for reaching out! Baerett will contact you at the phone number you provided — usually within a few hours.</p>
+        <button class="btn btn-primary" onclick="closeModal()" style="margin-top:0.5rem;">Done</button>
       </div>
-      <h3>You're all set!</h3>
-      <p>Thanks for reaching out! Baerett will contact you at the phone number you provided — usually within a few hours.</p>
-      <button class="btn btn-primary" onclick="closeModal()" style="margin-top:0.5rem;">Done</button>
     </div>
   </div>
 </div>
@@ -1258,61 +1264,9 @@
     setTimeout(openModal, 800);
   });
 
-  // ─── Form submission ────────────────────────────
-  async function submitForm() {
-    const name     = document.getElementById('fname').value.trim();
-    const phone    = document.getElementById('fphone').value.trim();
-    const address  = document.getElementById('faddress').value.trim();
-    const service  = document.getElementById('fservice').value;
-    const frequency = document.getElementById('ffrequency').value;
-
-    if (!name || !phone || !address || !service || !frequency) {
-      alert('Please fill in all required fields.');
-      return;
-    }
-
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true;
-    btn.textContent = 'Sending…';
-
-    const data = {
-      name,
-      phone,
-      address,
-      service_type: service,
-      frequency,
-      preferred_date: document.getElementById('fdate').value,
-      notes: document.getElementById('fnotes').value,
-      _subject: `New Cleaning Request from ${name}`,
-      _replyto: phone
-    };
-
-    try {
-      // ── Replace YOUR_FORM_ID with your Formspree form ID ──────────────────
-      // Sign up at https://formspree.io, create a form, and paste the ID here.
-      // Example: https://formspree.io/f/abcdefgh
-      const response = await fetch('https://formspree.io/f/mbdqzzbb', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (response.ok) {
-        document.getElementById('modalFormView').style.display = 'none';
-        document.getElementById('modalSuccess').classList.add('show');
-      } else {
-        throw new Error('Submission failed');
-      }
-    } catch (err) {
-      // Fallback: show success anyway so user isn't left hanging
-      // Remove this in production once Formspree is configured
-      document.getElementById('modalFormView').style.display = 'none';
-      document.getElementById('modalSuccess').classList.add('show');
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Request My Quote →';
-    }
-  }
+  // ─── Formspree Ajax SDK ────────────────────────
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#booking-form', formId: 'mbdqzzbb' });
 
   // ─── Mobile menu ───────────────────────────────
   function toggleMobileMenu() {
@@ -1344,5 +1298,6 @@
   // ─── Close modal on Escape ──────────────────────
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>
